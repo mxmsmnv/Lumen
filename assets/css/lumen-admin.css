@@ -1,0 +1,111 @@
+/*
+ * Lumen Process module workspace.
+ *
+ * Follows mxmsmnv/pw-design-system: native UIkit composition, current
+ * ProcessWire --pw-* tokens, and selectors scoped to ProcessLumen.
+ */
+
+.ProcessLumen .lumen-admin {
+	color: var(--pw-text-color);
+}
+
+.ProcessLumen .lumen-admin-nav {
+	overflow-x: auto;
+	overflow-y: hidden;
+	scrollbar-width: thin;
+}
+
+.ProcessLumen .lumen-admin-nav .uk-tab {
+	flex-wrap: nowrap;
+	min-width: max-content;
+}
+
+.ProcessLumen .lumen-admin-nav a {
+	white-space: nowrap;
+}
+
+.ProcessLumen .lumen-admin .uk-button,
+.ProcessLumen .lumen-admin .uk-button:hover,
+.ProcessLumen .lumen-admin .uk-button:focus,
+.ProcessLumen .lumen-admin .uk-button:active {
+	text-decoration: none;
+}
+
+.ProcessLumen .lumen-admin-section {
+	scroll-margin-top: 1.5rem;
+}
+
+.ProcessLumen .lumen-admin-section + .lumen-admin-section {
+	margin-top: 2rem;
+	padding-top: 2rem;
+	border-top: 1px solid var(--pw-border-color);
+}
+
+.ProcessLumen .lumen-module-head,
+.ProcessLumen .lumen-section-head {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 1rem;
+	align-items: end;
+	margin-bottom: 1rem;
+}
+
+.ProcessLumen .lumen-section-head > *,
+.ProcessLumen .uk-grid > * {
+	min-width: 0;
+}
+
+.ProcessLumen .lumen-video-detail .lumen-hls-url {
+	display: block;
+	max-width: 100%;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
+.ProcessLumen .uk-card-default,
+.ProcessLumen .uk-placeholder {
+	border-color: var(--pw-border-color);
+	background: var(--pw-blocks-background);
+	color: var(--pw-text-color);
+}
+
+.ProcessLumen .uk-background-muted {
+	background: var(--pw-inputs-background) !important;
+}
+
+.ProcessLumen .uk-table {
+	color: var(--pw-text-color);
+}
+
+.ProcessLumen .uk-table-divider > tr:not(:first-child),
+.ProcessLumen .uk-table-divider > :not(:first-child) > tr,
+.ProcessLumen .uk-table-divider > :first-child > tr:not(:first-child) {
+	border-top-color: var(--pw-border-color);
+}
+
+.ProcessLumen .lumen-empty-state {
+	max-width: 48rem;
+	margin-inline: auto;
+}
+
+.ProcessLumen .LumenCheckbox {
+	background-color: var(--pw-inputs-background);
+}
+
+@media (max-width: 639px) {
+	.ProcessLumen .lumen-module-head,
+	.ProcessLumen .lumen-section-head {
+		grid-template-columns: 1fr;
+		align-items: start;
+	}
+
+	.ProcessLumen .lumen-admin-section + .lumen-admin-section {
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
+	}
+
+	.ProcessLumen .uk-card-body {
+		padding: 1rem;
+	}
+}

@@ -1,0 +1,8 @@
+# Lumen — Cloudflare Stream for ProcessWire
+
+.DS_Store
+Thumbs.db
+*.log
+*.zip
+*.tar.gz
+/site/assets/logs/
