@@ -16,21 +16,23 @@ trait LumenConfigUiTrait {
 
 		// Help block
 		$help = $modules->get('InputfieldMarkup');
+		$help->label = __('Where to find these values');
+		$help->icon = 'question-circle';
+		$help->collapsed = Inputfield::collapsedYes;
 		$help->value =
-			'<div class="uk-alert uk-alert-primary uk-margin-remove-bottom">'
-			. '<p class="uk-text-small">'
-			. '<strong>' . __('Connect checklist') . '</strong><br>'
-			. __('1. In Cloudflare, open Media → Stream → Plans and activate Images & Stream.') . '<br>'
-			. __('2. Copy your Account ID from the Cloudflare dashboard URL or account overview.') . '<br>'
-			. __('3. Create an API token with Stream Write / Stream:Edit permission for this account.') . '<br><br>'
-			. '<strong>' . __('Account ID') . '</strong> — ' . __('The dashboard URL looks like:') . '<br>'
+			'<ol class="uk-list uk-list-decimal uk-margin-remove-top">'
+			. '<li>' . __('In Cloudflare, open Media → Stream → Plans and activate Images & Stream.') . '</li>'
+			. '<li>' . __('Copy your Account ID from the Cloudflare dashboard URL or account overview.') . '</li>'
+			. '<li>' . __('Create an API token with Stream Write / Stream:Edit permission for this account.') . '</li>'
+			. '</ol>'
+			. '<p class="uk-text-small"><strong>' . __('Account ID') . '</strong> — '
 			. '<code>dash.cloudflare.com/<mark>YOUR_ACCOUNT_ID</mark>/stream</code><br>'
 			. '<strong>' . __('API Token') . '</strong> — '
 			. sprintf(__('Go to %s and create a token with Stream Write / Stream:Edit permission.'),
 				'<a href="https://dash.cloudflare.com/profile/api-tokens" target="_blank">Cloudflare API Tokens →</a>') . '<br>'
 			. __('After saving, visit') . ' <strong>Setup → Lumen</strong> ' . __('and click Test to verify the connection.')
 			. '</p>'
-			. '</div>';
+			;
 		$fs->add($help);
 
 		// Account ID

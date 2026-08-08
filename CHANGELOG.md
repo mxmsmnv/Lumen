@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced the API token control with a single masked input. Existing tokens
   are never rendered into the DOM and remain unchanged when the field is left
   blank.
+- Moved the connection checklist into a compact, collapsed help section so the
+  credential controls remain visible without scrolling.
 
 ## [1.0.0] - 2026-08-02
 
