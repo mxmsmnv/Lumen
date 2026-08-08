@@ -10,7 +10,9 @@ trait LumenConfigUiTrait {
 
 		// ── Credentials ──────────────────────────────────────────
 		$fs = $modules->get('InputfieldFieldset');
-		$fs->label = __('Cloudflare Credentials');		$fs->description = __('Connect your Cloudflare Images & Stream account. Choose the free Images & Stream plan first, then create an API token for this module.');
+		$fs->label = __('Cloudflare Credentials');
+		$fs->description = __('Connect the Cloudflare account used by Images and Stream.');
+		$fs->icon = 'cloud';
 
 		// Help block
 		$help = $modules->get('InputfieldMarkup');
@@ -32,25 +34,43 @@ trait LumenConfigUiTrait {
 		$fs->add($help);
 
 		// Account ID
-		$f = $modules->get('InputfieldPassword');
+		$f = $modules->get('InputfieldText');
 		$f->name = 'cfAccountId';
 		$f->label = __('Account ID');
-		$f->description = __('The 32-character ID from your Cloudflare Dashboard URL.');
+		$f->description = __('Public 32-character account identifier. This is not a password or API secret.');
 		$f->required = true;
 		$f->attr('placeholder', 'e.g. 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d');
+		$f->attr('autocomplete', 'off');
+		$f->attr('spellcheck', 'false');
+		$f->attr('maxlength', 32);
+		$f->attr('pattern', '[A-Fa-f0-9]{32}');
+		$f->icon = 'id-card-o';
 		$f->columnWidth = 50;
 		if(isset($data['cfAccountId'])) $f->value = $data['cfAccountId'];
 		$fs->add($f);
 
 		// API Token
+		$storedToken = isset($data['cfApiToken']) ? (string)$data['cfApiToken'] : '';
 		$f = $modules->get('InputfieldText');
 		$f->name = 'cfApiToken';
 		$f->label = __('API Token');
-		$f->description = __('Token with Stream Write / Stream:Edit permission.');
-		$f->required = true;
-		$f->attr('placeholder', 'Paste your token here…');
+		$f->description = $storedToken !== ''
+			? __('A token is configured. Enter a new token to replace it, or leave this field blank to keep the current token.')
+			: __('Token with Stream Write / Stream:Edit permission. It is never displayed after saving.');
+		$f->required = $storedToken === '';
+		$f->attr('type', 'password');
+		$f->attr('value', '');
+		$f->attr('autocomplete', 'new-password');
+		$f->attr('spellcheck', 'false');
+		$f->attr('placeholder', $storedToken !== '' ? __('Enter a new token to replace the stored token') : __('Paste your token here…'));
+		$f->icon = 'key';
 		$f->columnWidth = 50;
-		if(isset($data['cfApiToken'])) $f->value = $data['cfApiToken'];
+		$f->addHookAfter('processInput', function(HookEvent $event) use ($storedToken) {
+			$field = $event->object;
+			if(trim((string)$field->attr('value')) === '' && $storedToken !== '') {
+				$field->attr('value', $storedToken);
+			}
+		});
 		$fs->add($f);
 
 		$inputfields->add($fs);

@@ -5,6 +5,16 @@ All notable changes to Lumen will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.8] - 2026-08-08
+
+### Fixed
+
+- Rendered the Cloudflare Account ID as a normal validated text field instead
+  of a password-change form.
+- Replaced the API token control with a single masked input. Existing tokens
+  are never rendered into the DOM and remain unchanged when the field is left
+  blank.
+
 ## [1.0.0] - 2026-08-02
 
 First release of Lumen. The module has not been published before.

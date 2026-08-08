@@ -7,7 +7,7 @@ require_once __DIR__ . '/src/Fieldtype/PlaybackTrait.php';
 /**
  * ProcessWire file fieldtype for Cloudflare Stream.
  *
- * @version 100
+ * @version 118
  */
 class FieldtypeLumen extends FieldtypeFile implements Module {
 
@@ -18,7 +18,7 @@ class FieldtypeLumen extends FieldtypeFile implements Module {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Lumen',
-			'version' => 100,
+			'version' => 118,
 			'summary' => 'Store and stream video files using Cloudflare Stream',
 			'href' => 'https://smnv.org',
 			'author' => 'Maxim Semenov',

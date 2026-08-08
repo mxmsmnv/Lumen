@@ -106,7 +106,9 @@ The text formatter supports `[[lumen:video_uid]]`,
 2. Refresh modules in ProcessWire and install **Lumen**.
 3. Enable Cloudflare Stream for the account.
 4. Create an API token with `Stream:Edit` permission.
-5. Open **Modules → Configure → Lumen** and save the Account ID and token.
+5. Open **Modules → Configure → Lumen** and save the public Account ID and API
+   token. The token is hidden after saving; leave its field blank to keep the
+   configured token.
 6. Open **Setup → Lumen** and refresh the connection status.
 7. Create a **Cloudflare Stream Files** field and add it to the required
    templates.

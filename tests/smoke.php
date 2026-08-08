@@ -111,11 +111,11 @@ foreach(array_merge($moduleFiles, $srcPhpFiles) as $file) {
 section('3. Class structure');
 
 $modules = [
-    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 100],
-    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 100],
-    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 100],
-    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 100],
-    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 100],
+    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 118],
+    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 118],
+    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 118],
+    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 118],
+    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 118],
 ];
 
 foreach($modules as $file => $spec) {
@@ -297,6 +297,18 @@ if(strpos($settingsSource, 'value="" autocomplete="new-password"') !== false
     pass("ProcessLumen never renders the stored Cloudflare token into the DOM");
 } else {
     fail("ProcessLumen settings may expose or erase the stored Cloudflare token");
+}
+
+$configUiSource = file_get_contents("$root/src/Core/ConfigUiTrait.php");
+if(strpos($configUiSource, "get('InputfieldText')") !== false
+    && strpos($configUiSource, "name = 'cfAccountId'") !== false
+    && strpos($configUiSource, "attr('type', 'password')") !== false
+    && strpos($configUiSource, "attr('value', '')") !== false
+    && strpos($configUiSource, "addHookAfter('processInput'") !== false
+    && strpos($configUiSource, "\$f->value = \$data['cfApiToken']") === false) {
+    pass("Module config renders Account ID as text and never renders the stored API token");
+} else {
+    fail("Module config credential fields are unsafe or use the wrong controls");
 }
 
 // ---------------------------------------------------------------------------
