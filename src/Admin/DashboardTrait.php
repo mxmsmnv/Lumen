@@ -114,7 +114,7 @@ trait ProcessLumenDashboardTrait {
 		$cards = '';
 		foreach($items as $key => $item) {
 			$value = $stats[$key] ?? 0;
-			$isActive = $key === 'total' ? $activeStatus === '' : $activeStatus === $key;
+			$isActive = $key === 'total' ? (string) $activeStatus === '' : $activeStatus === $key;
 			$url = $key === 'total' ? $baseUrl . '#library' : $baseUrl . '?status=' . $key . '#library';
 			$cards .=
 				'<li>' .

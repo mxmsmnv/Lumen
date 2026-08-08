@@ -281,7 +281,8 @@ if(strpos($processSources, 'lumen-sort-control') !== false
     fail("ProcessLumen is missing the compact sort control");
 }
 
-if(strpos($processSources, "\$key === 'total' ? \$baseUrl . '#library'") !== false) {
+if(strpos($processSources, "\$key === 'total' ? \$baseUrl . '#library'") !== false
+    && strpos($processSources, "(string) \$activeStatus === ''") !== false) {
     pass("ProcessLumen total status returns to the complete library");
 } else {
     fail("ProcessLumen total status may apply an invalid status filter");
