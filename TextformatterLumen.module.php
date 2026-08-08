@@ -8,14 +8,14 @@
  *   [[lumen:page_id.field_name]]         — first video from a page field
  *   [[lumen:page_id.field_name:thumb]]   — thumbnail instead of player
  *
- * @version 118
+ * @version 119
  */
 class TextformatterLumen extends Textformatter implements Module, ConfigurableModule {
 
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Lumen Embed',
-			'version' => 118,
+			'version' => 119,
 			'summary' => 'Embed Cloudflare Stream videos with [[lumen:...]] shortcodes',
 			'href' => 'https://smnv.org',
 				'author' => 'Maxim Semenov',

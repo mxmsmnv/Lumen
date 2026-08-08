@@ -25,9 +25,10 @@ To verify credentials, go to **Setup → Lumen** and click **Refresh status**.
 Or call `$lumen->validateCredentials($accountId, $apiToken)` in code.
 
 The admin workspace follows `mxmsmnv/pw-design-system` and is organized into
-Overview, Videos, Upload, Settings, and Event Log sections. It uses native
-ProcessWire/UIkit controls and inherits light, dark, and accent colors from the
-active AdminThemeUikit theme.
+Overview, Videos, Upload, Settings, Usage, and Event Log sections. It uses
+native ProcessWire/UIkit controls and inherits light, dark, and accent colors
+from the active AdminThemeUikit theme. The video library is the primary
+workspace; usage and cost estimates are collapsed until requested.
 
 ## Field Setup
 

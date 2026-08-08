@@ -5,6 +5,22 @@ All notable changes to Lumen will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.9] - 2026-08-08
+
+### Changed
+
+- Reworked Setup → Lumen around the video-management workflow: compact status
+  filters and actions now lead directly into the library.
+- Replaced the wide sort-button row with a labelled native select and preserved
+  tag filters when submitting a title search.
+- Moved usage and cost estimates into a dedicated, collapsed section while
+  keeping plan details available on demand.
+- Aligned workspace navigation with the rounded UIkit pill pattern used by the
+  wider ProcessWire module family and improved responsive overflow behavior.
+- Reduced repeated local-storage notices inside video cards.
+- Fixed the Total status control so it clears filtering instead of requesting
+  the nonexistent `total` processing state.
+
 ## [1.1.8] - 2026-08-08
 
 ### Fixed

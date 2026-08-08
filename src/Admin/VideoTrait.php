@@ -137,10 +137,8 @@ trait ProcessLumenVideoTrait {
 				'</p>' .
 			'</div>';
 		} else {
-			$copyButtons = '<div class="uk-margin-small-top uk-padding-small uk-background-muted">' .
-				'<p class="uk-text-small uk-text-muted uk-margin-remove">' .
-				$s->entities($this->_('Upload to Stream to enable embed and URL copy actions.')) .
-				'</p>' .
+			$copyButtons = '<div class="lumen-card-note uk-text-small uk-text-muted">' .
+				$s->entities($this->_('Local file · Stream links unavailable')) .
 			'</div>';
 		}
 

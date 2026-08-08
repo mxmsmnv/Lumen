@@ -162,14 +162,11 @@ trait ProcessLumenExecuteTrait {
 				'</div>' .
 			'</div>' .
 
-			// --- Stats row ---
-			$this->renderStatsRow($stats, $filterStatus) .
-
-			// --- Usage estimate ---
-			$this->renderUsagePanel($stats) .
-
-			// --- Toolbar ---
+			// --- Primary actions ---
 			$this->renderToolbar($stats) .
+
+			// --- Status filters ---
+			$this->renderStatsRow($stats, $filterStatus) .
 			'</section>' .
 			'<section id="library" class="lumen-admin-section">' .
 				'<div class="lumen-section-head">' .
@@ -205,6 +202,13 @@ trait ProcessLumenExecuteTrait {
 			'</section>' .
 			'<section id="settings" class="lumen-admin-section">' .
 				$this->renderSettingsPanel() .
+			'</section>' .
+			'<section id="usage" class="lumen-admin-section">' .
+				'<div class="lumen-section-head"><div><h2 class="uk-h3 uk-margin-remove">' . $sanitizer->entities($this->_('Usage')) . '</h2>' .
+				'<p class="uk-text-muted uk-margin-small-top uk-margin-remove-bottom">' .
+					$sanitizer->entities($this->_('Storage, delivery, and estimated Cloudflare Stream cost.')) .
+				'</p></div></div>' .
+				$this->renderUsagePanel($stats) .
 			'</section>' .
 			'<section id="event-log" class="lumen-admin-section">' .
 				$this->renderEventLogPanel() .

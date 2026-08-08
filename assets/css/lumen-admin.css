@@ -15,9 +15,20 @@
 	scrollbar-width: thin;
 }
 
-.ProcessLumen .lumen-admin-nav .uk-tab {
+.ProcessLumen .lumen-admin-nav .uk-subnav {
 	flex-wrap: nowrap;
 	min-width: max-content;
+	margin-left: 0;
+	gap: 0.5rem;
+}
+
+.ProcessLumen .lumen-admin-nav .uk-subnav > * {
+	padding-left: 0;
+}
+
+.ProcessLumen .lumen-admin-nav .uk-subnav-pill > .uk-active > a {
+	background: var(--pw-main-color);
+	color: var(--pw-main-color-contrast, #fff);
 }
 
 .ProcessLumen .lumen-admin-nav a {
@@ -36,8 +47,8 @@
 }
 
 .ProcessLumen .lumen-admin-section + .lumen-admin-section {
-	margin-top: 2rem;
-	padding-top: 2rem;
+	margin-top: 1.75rem;
+	padding-top: 1.75rem;
 	border-top: 1px solid var(--pw-border-color);
 }
 
@@ -53,6 +64,162 @@
 .ProcessLumen .lumen-section-head > *,
 .ProcessLumen .uk-grid > * {
 	min-width: 0;
+}
+
+.ProcessLumen .lumen-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.75rem 0;
+	border-top: 1px solid var(--pw-border-color);
+	border-bottom: 1px solid var(--pw-border-color);
+}
+
+.ProcessLumen .lumen-toolbar-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.ProcessLumen .lumen-stat-grid {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ProcessLumen .lumen-stat {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.75rem;
+	min-height: 2.75rem;
+	padding: 0.65rem 0.8rem;
+	border: 1px solid var(--pw-border-color);
+	background: var(--pw-blocks-background);
+}
+
+.ProcessLumen .lumen-stat:hover,
+.ProcessLumen .lumen-stat:focus-visible,
+.ProcessLumen .lumen-stat--active {
+	border-color: var(--pw-main-color);
+	box-shadow: inset 0 3px 0 var(--pw-main-color);
+}
+
+.ProcessLumen .lumen-stat-value {
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.ProcessLumen .lumen-stat-label {
+	color: var(--pw-muted-color);
+	font-size: 0.8125rem;
+}
+
+.ProcessLumen .lumen-library-tools {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 1rem;
+	align-items: center;
+}
+
+.ProcessLumen .lumen-sort-control {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--pw-muted-color);
+	font-size: 0.8125rem;
+}
+
+.ProcessLumen .lumen-sort-control .uk-select {
+	width: 10rem;
+}
+
+.ProcessLumen .lumen-usage-panel {
+	overflow: clip;
+}
+
+.ProcessLumen .lumen-disclosure-summary {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	padding: 1rem 1.25rem;
+	cursor: pointer;
+	list-style: none;
+}
+
+.ProcessLumen .lumen-disclosure-summary::-webkit-details-marker {
+	display: none;
+}
+
+.ProcessLumen .lumen-disclosure-summary > span:first-child {
+	display: grid;
+	gap: 0.2rem;
+	min-width: 0;
+	margin-right: auto;
+}
+
+.ProcessLumen .lumen-disclosure-summary small {
+	color: var(--pw-muted-color);
+	font-weight: 400;
+}
+
+.ProcessLumen .lumen-disclosure-summary::after {
+	content: "+";
+	display: grid;
+	place-items: center;
+	width: 1.75rem;
+	height: 1.75rem;
+	border: 1px solid var(--pw-border-color);
+	border-radius: 50%;
+	font-size: 1.1rem;
+	line-height: 1;
+}
+
+.ProcessLumen .lumen-usage-panel[open] .lumen-disclosure-summary::after {
+	content: "−";
+}
+
+.ProcessLumen .lumen-usage-body {
+	padding: 1.25rem;
+	border-top: 1px solid var(--pw-border-color);
+}
+
+.ProcessLumen .lumen-usage-metrics {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+}
+
+.ProcessLumen .lumen-usage-metrics > div {
+	display: grid;
+	gap: 0.2rem;
+	padding-right: 1rem;
+	border-right: 1px solid var(--pw-border-color);
+}
+
+.ProcessLumen .lumen-usage-metrics > div:last-child {
+	border-right: 0;
+}
+
+.ProcessLumen .lumen-usage-metrics span,
+.ProcessLumen .lumen-usage-metrics small,
+.ProcessLumen .lumen-card-note {
+	color: var(--pw-muted-color);
+}
+
+.ProcessLumen .lumen-usage-metrics strong {
+	font-size: 1.25rem;
+}
+
+.ProcessLumen .lumen-card-note {
+	margin-top: 0.75rem;
+	padding-top: 0.65rem;
+	border-top: 1px solid var(--pw-border-color);
 }
 
 .ProcessLumen .lumen-video-detail .lumen-hls-url {
@@ -107,5 +274,67 @@
 
 	.ProcessLumen .uk-card-body {
 		padding: 1rem;
+	}
+
+	.ProcessLumen .lumen-toolbar,
+	.ProcessLumen .lumen-library-tools {
+		display: grid;
+		grid-template-columns: 1fr;
+		align-items: start;
+	}
+
+	.ProcessLumen .lumen-toolbar-actions > div,
+	.ProcessLumen .lumen-toolbar-actions .uk-button {
+		flex: 1 1 auto;
+	}
+
+	.ProcessLumen .lumen-stat-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.ProcessLumen .lumen-stat-grid > li:first-child {
+		grid-column: 1 / -1;
+	}
+
+	.ProcessLumen .lumen-sort-control {
+		justify-content: space-between;
+	}
+
+	.ProcessLumen .lumen-sort-control .uk-select {
+		width: min(12rem, 65vw);
+	}
+
+	.ProcessLumen .lumen-disclosure-summary {
+		align-items: flex-start;
+		padding: 1rem;
+	}
+
+	.ProcessLumen .lumen-disclosure-summary .uk-label {
+		display: none;
+	}
+
+	.ProcessLumen .lumen-usage-body {
+		padding: 1rem;
+	}
+
+	.ProcessLumen .lumen-usage-metrics {
+		grid-template-columns: 1fr;
+	}
+
+	.ProcessLumen .lumen-usage-metrics > div {
+		padding: 0 0 0.75rem;
+		border-right: 0;
+		border-bottom: 1px solid var(--pw-border-color);
+	}
+
+	.ProcessLumen .lumen-usage-metrics > div:last-child {
+		padding-bottom: 0;
+		border-bottom: 0;
+	}
+}
+
+@media (min-width: 640px) and (max-width: 959px) {
+	.ProcessLumen .lumen-stat-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 }

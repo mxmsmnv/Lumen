@@ -14,7 +14,7 @@ require_once __DIR__ . '/src/Support/FieldsTrait.php';
 /**
  * Lumen administrative process.
  *
- * @version 118
+ * @version 119
  */
 class ProcessLumen extends Process implements Module {
 
@@ -45,7 +45,7 @@ class ProcessLumen extends Process implements Module {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Lumen',
-			'version' => 118,
+			'version' => 119,
 			'summary' => 'Dashboard for Lumen / Cloudflare Stream video fields',
 			'href' => 'https://smnv.org',
 			'author' => 'Maxim Semenov',

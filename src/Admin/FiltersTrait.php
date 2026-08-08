@@ -36,6 +36,7 @@ trait ProcessLumenFiltersTrait {
 					// Preserve other filters
 					($filterStatus ? '<input type="hidden" name="status" value="' . $s->entities($filterStatus) . '">' : '') .
 					($filterCategory ? '<input type="hidden" name="category" value="' . $s->entities($filterCategory) . '">' : '') .
+					($filterTags ? '<input type="hidden" name="tags" value="' . $s->entities($filterTags) . '">' : '') .
 				'</form>' .
 			'</div>' .
 
@@ -123,24 +124,21 @@ trait ProcessLumenFiltersTrait {
 			   }
 			   $q = $queryParts ? '?' . implode('&', $queryParts) . '&' : '?';
 
-			   $out = '<div class="uk-grid-small uk-flex-middle uk-margin-small-bottom" uk-grid>' .
-			    '<div class="uk-width-expand">' .
-			        '<h3 class="uk-heading-line uk-text-small uk-margin-remove"><span>' .
-			            $s->entities($this->_('Library')) .
-			        '</span></h3>' .
-			    '</div>' .
-			    '<div class="uk-width-auto">' .
-			        '<span class="uk-text-small uk-text-muted uk-margin-small-right">' . $s->entities($this->_('Sort')) . '</span>' .
-			        '<div>';
+			   $out = '<div class="lumen-library-tools uk-margin-small-bottom">' .
+				'<h3 class="uk-heading-line uk-text-small uk-margin-remove"><span>' .
+					$s->entities($this->_('Library')) .
+				'</span></h3>' .
+				'<label class="lumen-sort-control"><span>' . $s->entities($this->_('Sort by')) . '</span>' .
+				'<select class="uk-select uk-form-small" onchange="window.location.href=this.value">';
 
 		foreach($options as $key => $label) {
 			$isActive = ($currentSort === $key);
-			$cls = $isActive ? 'uk-button uk-button-primary uk-button-small uk-margin-small-right uk-margin-small-bottom' : 'uk-button uk-button-default uk-button-small uk-margin-small-right uk-margin-small-bottom';
-			$out .= '<button type="button" onclick="window.location.href=\'' . $baseUrl . $q . 'sort=' . $key . '\'" class="' . $cls . '">' .
-				$s->entities($label) . '</button>';
+			$url = $baseUrl . $q . 'sort=' . $key . '#library';
+			$out .= '<option value="' . $s->entities($url) . '"' . ($isActive ? ' selected' : '') . '>' .
+				$s->entities($label) . '</option>';
 		}
 
-		$out .= '</div></div></div>';
+		$out .= '</select></label></div>';
 		return $out;
 	}
 

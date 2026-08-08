@@ -9,10 +9,11 @@ trait ProcessLumenDashboardTrait {
 			'library' => $this->_('Videos'),
 			'upload' => $this->_('Upload'),
 			'settings' => $this->_('Settings'),
+			'usage' => $this->_('Usage'),
 			'event-log' => $this->_('Event Log'),
 		);
 		$out = '<nav class="lumen-admin-nav uk-margin-medium-bottom" aria-label="' .
-			$s->entities($this->_('Lumen sections')) . '"><ul class="uk-tab uk-margin-remove">';
+			$s->entities($this->_('Lumen sections')) . '"><ul class="uk-subnav uk-subnav-pill uk-margin-remove">';
 		foreach($items as $id => $label) {
 			$out .= '<li' . ($id === 'overview' ? ' class="uk-active"' : '') . '><a href="#' . $id . '">' .
 				$s->entities($label) . '</a></li>';
@@ -78,7 +79,6 @@ trait ProcessLumenDashboardTrait {
 	    $badgeClass = $ok ? 'uk-label-success' : 'uk-label-danger';
 	    $label = $ok ? $this->_('Connected') : $this->_('Disconnected');
 	    $sanitizer = $this->wire('sanitizer');
-	    $adminUrl = $this->wire('config')->urls->admin;
 	    $testUrl = $this->page->url . 'test-connection/';
 
 	    return
@@ -93,7 +93,7 @@ trait ProcessLumenDashboardTrait {
 	            '</div>' .
 	            '<div class="uk-width-auto">' .
 	                '<a href="' . $testUrl . '" class="uk-button uk-button-default uk-button-small">' .
-	                    $sanitizer->entities($this->_('Test')) .
+	                    $sanitizer->entities($this->_('Test connection')) .
 	                '</a>' .
 	            '</div>' .
 	        '</div>';
@@ -102,11 +102,11 @@ trait ProcessLumenDashboardTrait {
 
 	protected function renderStatsRow($stats, $activeStatus = '') {
 		$items = array(
-			'total'      => array('label' => $this->_('Total'), 'color' => ''),
-			'ready'      => array('label' => $this->_('Ready'),       'color' => 'var(--pw-alert-success)'),
-			'processing' => array('label' => $this->_('Processing'),       'color' => 'var(--pw-alert-warning)'),
-			'error'      => array('label' => $this->_('Error'),     'color' => 'var(--pw-error-inline-text-color)'),
-			'pending'    => array('label' => $this->_('Pending'),'color' => ''),
+			'total' => array('label' => $this->_('Total')),
+			'ready' => array('label' => $this->_('Ready')),
+			'processing' => array('label' => $this->_('Processing')),
+			'error' => array('label' => $this->_('Error')),
+			'pending' => array('label' => $this->_('Pending')),
 		);
 
 		$baseUrl = $this->page->url;
@@ -114,28 +114,21 @@ trait ProcessLumenDashboardTrait {
 		$cards = '';
 		foreach($items as $key => $item) {
 			$value = $stats[$key] ?? 0;
-
-			// Active state
-			$isActive = ($activeStatus === $key);
-			$cardClass = 'uk-card uk-card-default uk-card-small uk-card-body uk-text-center uk-height-1-1';
-			if($isActive) $cardClass .= ' uk-card-primary';
-
+			$isActive = $key === 'total' ? $activeStatus === '' : $activeStatus === $key;
+			$url = $key === 'total' ? $baseUrl . '#library' : $baseUrl . '?status=' . $key . '#library';
 			$cards .=
-				'<div>' .
-					'<a href="' . ($isActive ? $baseUrl : $baseUrl . '?status=' . $key) . '" class="uk-display-block uk-link-reset">' .
-							'<div class="' . $cardClass . '">' .
-								'<div class="uk-text-large uk-text-bold">' .
-								(int)$value .
-							'</div>' .
-							'<div class="uk-text-small uk-text-muted">' .
-								$this->wire('sanitizer')->entities($item['label']) .
-							'</div>' .
-						'</div>' .
+				'<li>' .
+					'<a href="' . $url . '" ' .
+						'class="lumen-stat uk-link-reset' . ($isActive ? ' lumen-stat--active' : '') . '"' .
+						($isActive ? ' aria-current="page"' : '') . '>' .
+						'<span class="lumen-stat-value">' . (int)$value . '</span>' .
+						'<span class="lumen-stat-label">' . $this->wire('sanitizer')->entities($item['label']) . '</span>' .
 					'</a>' .
-				'</div>';
+				'</li>';
 		}
 
-		return '<div class="uk-child-width-1-2 uk-child-width-1-5@m uk-grid-small uk-grid-match uk-margin-bottom" uk-grid>' . $cards . '</div>';
+		return '<ul class="lumen-stat-grid uk-margin-bottom" aria-label="' .
+			$this->wire('sanitizer')->entities($this->_('Video status filters')) . '">' . $cards . '</ul>';
 	}
 
 
@@ -153,45 +146,22 @@ trait ProcessLumenDashboardTrait {
 		$creatorStoragePct = min(100, round(($storedMinutes / self::STREAM_CREATOR_STORAGE_MINUTES) * 100));
 		$creatorDeliveryPct = min(100, round(($deliveredMinutes / self::STREAM_CREATOR_DELIVERY_MINUTES) * 100));
 
-		return '<div class="uk-card uk-card-default uk-card-small uk-card-body uk-margin-bottom">' .
-			'<div class="uk-grid-small uk-flex-middle uk-margin-small-bottom" uk-grid>' .
-				'<div class="uk-width-expand">' .
-					'<h3 class="uk-card-title uk-margin-remove">' .
-						$s->entities($this->_('Stream Usage')) .
-					'</h3>' .
-					'<p class="uk-text-small uk-text-muted uk-margin-small-top uk-margin-remove-bottom">' .
-						$s->entities($this->_('Track stored and delivered video minutes against Cloudflare Images + Stream pricing.')) .
-					'</p>' .
-				'</div>' .
-				'<div class="uk-width-auto">' .
-					'<span class="uk-label">' . $s->entities($this->_('Estimate')) . '</span>' .
-				'</div>' .
-			'</div>' .
-			'<div class="uk-child-width-1-2@m uk-grid-small uk-grid-match uk-margin-small-bottom" uk-grid>' .
-				'<div>' .
-					'<div class="uk-card uk-card-default uk-card-small uk-card-body uk-height-1-1">' .
-						'<div class="uk-text-small uk-text-muted">' . $s->entities($this->_('Stored minutes')) . '</div>' .
-						'<div class="uk-text-large uk-text-bold">' . $s->entities($this->formatUsageMinutes($storedMinutes)) . '</div>' .
-						'<p class="uk-text-small uk-text-muted uk-margin-remove">' .
-							sprintf(
-								$s->entities($this->_('Free Images + Stream: estimated $%1$s/mo at $5 per 1,000 stored minutes.')),
-								number_format($storageCost, 2)
-							) .
-						'</p>' .
-					'</div>' .
-				'</div>' .
-				'<div>' .
-					'<div class="uk-card uk-card-default uk-card-small uk-card-body uk-height-1-1">' .
-						'<div class="uk-text-small uk-text-muted">' . $s->entities($this->_('Delivered minutes')) . '</div>' .
-						'<div class="uk-text-large uk-text-bold">' . $s->entities($this->formatUsageMinutes($deliveredMinutes)) . '</div>' .
-						'<p class="uk-text-small uk-text-muted uk-margin-remove">' .
-							sprintf(
-								$s->entities($this->_('Free Images + Stream: estimated $%1$s/mo at $1 per 1,000 delivered minutes.')),
-								number_format($deliveryCost, 2)
-							) .
-						'</p>' .
-					'</div>' .
-				'</div>' .
+		return '<details class="lumen-usage-panel uk-card uk-card-default">' .
+			'<summary class="lumen-disclosure-summary">' .
+				'<span><strong>' . $s->entities($this->_('Stream usage and cost estimate')) . '</strong>' .
+				'<small>' . sprintf(
+					$s->entities($this->_('%1$s stored · %2$s delivered · about $%3$s/mo')),
+					$s->entities($this->formatUsageMinutes($storedMinutes)),
+					$s->entities($this->formatUsageMinutes($deliveredMinutes)),
+					number_format($totalCost, 2)
+				) . '</small></span>' .
+				'<span class="uk-label">' . $s->entities($this->_('Estimate')) . '</span>' .
+			'</summary>' .
+			'<div class="lumen-usage-body">' .
+			'<div class="lumen-usage-metrics">' .
+				'<div><span>' . $s->entities($this->_('Stored')) . '</span><strong>' . $s->entities($this->formatUsageMinutes($storedMinutes)) . '</strong><small>$' . number_format($storageCost, 2) . '/mo</small></div>' .
+				'<div><span>' . $s->entities($this->_('Delivered')) . '</span><strong>' . $s->entities($this->formatUsageMinutes($deliveredMinutes)) . '</strong><small>$' . number_format($deliveryCost, 2) . '/mo</small></div>' .
+				'<div><span>' . $s->entities($this->_('Estimated total')) . '</span><strong>$' . number_format($totalCost, 2) . '</strong><small>' . $s->entities($this->_('per month')) . '</small></div>' .
 			'</div>' .
 			'<div class="uk-alert-primary uk-margin-small-top uk-margin-remove-bottom" uk-alert>' .
 				'<p class="uk-margin-remove uk-text-small">' .
@@ -251,7 +221,7 @@ trait ProcessLumenDashboardTrait {
 					'</div>' .
 				'</div>' .
 			'</div>' .
-		'</div>';
+		'</div></details>';
 	}
 
 
@@ -272,20 +242,12 @@ trait ProcessLumenDashboardTrait {
 		$needsRefresh = $stats['processing'] > 0 || $stats['pending'] > 0;
 		$waiting = (int) $stats['processing'] + (int) $stats['pending'];
 
-		$out = '<div class="uk-card uk-card-default uk-card-small uk-card-body uk-margin-bottom">' .
-			'<div class="uk-grid-small uk-flex-middle" uk-grid>' .
-				'<div class="uk-width-expand">' .
-					'<h3 class="uk-card-title uk-margin-remove">' .
-						$s->entities($this->_('Workspace Actions')) .
-					'</h3>' .
-					'<p class="uk-text-small uk-text-muted uk-margin-small-top uk-margin-remove-bottom">' .
+		$out = '<div class="lumen-toolbar uk-margin-bottom">' .
+			'<p class="uk-text-small uk-text-muted uk-margin-remove">' .
 						($needsRefresh
 							? $s->entities(sprintf($this->_('%d video(s) are waiting for status updates.'), $waiting))
 							: $s->entities($this->_('Upload, organize, and publish Stream videos from one place.'))) .
-					'</p>' .
-				'</div>' .
-				'<div class="uk-width-auto@m uk-width-1-1">' .
-					'<div class="uk-grid-small uk-flex-middle uk-flex-right@m" uk-grid>';
+			'</p><div class="lumen-toolbar-actions">';
 
 		// Refresh button
 		if($needsRefresh) {
@@ -293,7 +255,7 @@ trait ProcessLumenDashboardTrait {
 			$refresh->name = 'refresh';
 			$refresh->value = sprintf($this->_('Refresh Status (%d)'), $waiting);
 			$refresh->addClass('uk-button-small');
-			$out .= '<div class="uk-width-auto">' .
+			$out .= '<div>' .
 				'<form method="post" action="./" class="uk-margin-remove">' .
 					$this->csrfInput() .
 					$refresh->render() .
@@ -302,7 +264,7 @@ trait ProcessLumenDashboardTrait {
 		}
 
 		$out .=
-			'<div class="uk-width-auto">' .
+			'<div>' .
 				'<form method="post" action="' . $adminUrl . 'setup/lumen/add-field/" class="uk-margin-remove">' .
 					$this->csrfInput() .
 					'<button type="submit" name="add_field" value="1" class="uk-button uk-button-primary uk-button-small">' .
@@ -312,17 +274,13 @@ trait ProcessLumenDashboardTrait {
 			'</div>';
 
 		$out .=
-			'<div class="uk-width-auto">' .
-				'<button type="button" onclick="window.location.href=\'' . $adminUrl . 'module/edit?name=Lumen\'" class="uk-button uk-button-default uk-button-small">' .
+			'<div>' .
+				'<a href="#settings" class="uk-button uk-button-default uk-button-small">' .
 					$s->entities($this->_('Settings')) .
-				'</button>' .
+				'</a>' .
 			'</div>';
 
-		$out .=
-					'</div>' .
-				'</div>' .
-			'</div>' .
-		'</div>';
+		$out .= '</div></div>';
 		    return $out;
 		}
 }

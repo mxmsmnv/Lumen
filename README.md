@@ -10,7 +10,7 @@ It is made for sites where video belongs to the content model: media libraries,
 editorial platforms, courses, portfolios, product showcases, and membership
 projects.
 
-**Version:** 1.0.0
+**Version:** 1.1.9
 **Author:** Maxim Semenov  
 **Website:** [smnv.org](https://smnv.org)  
 **Email:** [maxim@smnv.org](mailto:maxim@smnv.org)
@@ -50,7 +50,10 @@ Lumen adds **Setup → Lumen**, where editors can:
 - bulk-delete selected videos with remote deletion safeguards.
 
 The admin workspace uses native ProcessWire Inputfields and UIkit components,
-theme-aware `--pw-*` tokens, responsive navigation, and scoped styles.
+theme-aware `--pw-*` tokens, responsive pill navigation, compact status
+filters, a library-first layout, and scoped styles. Secondary usage estimates
+remain available in a disclosure without pushing the video library below the
+initial workspace view.
 
 ## Public API
 

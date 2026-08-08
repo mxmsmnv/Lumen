@@ -111,11 +111,11 @@ foreach(array_merge($moduleFiles, $srcPhpFiles) as $file) {
 section('3. Class structure');
 
 $modules = [
-    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 118],
-    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 118],
-    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 118],
-    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 118],
-    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 118],
+    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 119],
+    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 119],
+    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 119],
+    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 119],
+    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 119],
 ];
 
 foreach($modules as $file => $spec) {
@@ -260,11 +260,31 @@ section('7. Konkat design system');
 if(strpos($processSources, 'pw-wrap') !== false) pass("ProcessLumen uses pw-wrap");
 else warn("ProcessLumen missing pw-wrap panel wrapper");
 
-if(strpos($processSources, 'class="uk-tab') !== false
+if(strpos($processSources, 'uk-subnav uk-subnav-pill') !== false
     && strpos($processSources, 'lumen-admin-nav') !== false) {
-    pass("ProcessLumen uses primary uk-tab workspace navigation");
+    pass("ProcessLumen uses native pill workspace navigation");
 } else {
     fail("ProcessLumen missing native workspace navigation");
+}
+
+if(strpos($processSources, 'lumen-usage-panel') !== false
+    && strpos($processSources, '<details') !== false) {
+    pass("ProcessLumen keeps secondary usage estimates in a disclosure");
+} else {
+    fail("ProcessLumen usage estimates dominate the primary workspace");
+}
+
+if(strpos($processSources, 'lumen-sort-control') !== false
+    && strpos($processSources, '<select class="uk-select uk-form-small"') !== false) {
+    pass("ProcessLumen uses a compact native sort control");
+} else {
+    fail("ProcessLumen is missing the compact sort control");
+}
+
+if(strpos($processSources, "\$key === 'total' ? \$baseUrl . '#library'") !== false) {
+    pass("ProcessLumen total status returns to the complete library");
+} else {
+    fail("ProcessLumen total status may apply an invalid status filter");
 }
 
 if(preg_match('/uk-table[^"]*uk-table-divider/', $processSources)) pass("ProcessLumen uses uk-table uk-table-divider");
