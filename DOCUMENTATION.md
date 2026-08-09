@@ -25,7 +25,9 @@ To verify credentials, go to **Setup → Lumen** and click **Refresh status**.
 Or call `$lumen->validateCredentials($accountId, $apiToken)` in code.
 
 The admin workspace follows `mxmsmnv/pw-design-system` and is organized into
-Overview, Videos, Upload, Settings, Usage, and Event Log sections. It uses
+separate Overview, Videos, Upload, Settings, Usage, and Event Log routes. Each
+route has its own ProcessWire headline, breadcrumb trail, active navigation
+state, and focused task. It uses
 native ProcessWire/UIkit controls and inherits light, dark, and accent colors
 from the active AdminThemeUikit theme. The video library is the primary
 workspace; usage and cost estimates are collapsed until requested.
@@ -415,7 +417,7 @@ Indexes: `PRIMARY KEY (pages_id, sort)`, `KEY stream_uid`, `KEY stream_ready`, `
 | `checkStreamStatus($pagefile)` | Polls API, updates DB, returns `bool` |
 | `saveStreamMetadata($pagefile)` | Unified DB write via prepared statement |
 
-### ProcessLumen (admin dashboard)
+### ProcessLumen (admin workspace)
 
 | Constant | Value | Description |
 |----------|:-----:|-------------|
@@ -423,7 +425,7 @@ Indexes: `PRIMARY KEY (pages_id, sort)`, `KEY stream_uid`, `KEY stream_ready`, `
 | `API_RATE_LIMIT_US` | 100000 | 100 ms delay between API calls |
 | `PER_PAGE` | 24 | Videos per page in gallery |
 
-Dashboard features:
+Workspace features:
 - **Filters**: by status, category, tags, search
 - **Sorting**: status, name, date, duration, views, category
 - **Pagination**: 24 videos per page

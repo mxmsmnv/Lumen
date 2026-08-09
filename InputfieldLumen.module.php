@@ -14,7 +14,7 @@ require_once __DIR__ . '/src/Inputfield/RenderTrait.php';
  * @property int $maxDurationSeconds Maximum video duration
  * @property bool $localStorage Store files locally instead of Stream
  *
- * @version 119
+ * @version 120
  */
 class InputfieldLumen extends InputfieldFile implements Module {
 
@@ -31,7 +31,7 @@ class InputfieldLumen extends InputfieldFile implements Module {
 		return array(
 			'title' => __('Lumen', __FILE__),
 			'summary' => __('Video uploads to Cloudflare Stream with automatic transcoding', __FILE__),
-			'version' => 119,
+			'version' => 120,
 			'href' => 'https://smnv.org',
 			'author' => 'Maxim Semenov',
 			'requires' => 'FieldtypeLumen',

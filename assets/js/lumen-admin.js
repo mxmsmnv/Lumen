@@ -71,19 +71,4 @@
         var message = btn.getAttribute("data-confirm") || "";
         return confirm(message);
     };
-
-    var syncAdminNav = function() {
-        var hash = window.location.hash || "#overview";
-        document.querySelectorAll(".lumen-admin-nav li").forEach(function(item) {
-            var link = item.querySelector("a");
-            item.classList.toggle("uk-active", !!link && link.getAttribute("href") === hash);
-        });
-    };
-
-    window.addEventListener("hashchange", syncAdminNav);
-    if(document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", syncAdminNav);
-    } else {
-        syncAdminNav();
-    }
 })();

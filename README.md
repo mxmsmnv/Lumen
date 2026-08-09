@@ -10,7 +10,7 @@ It is made for sites where video belongs to the content model: media libraries,
 editorial platforms, courses, portfolios, product showcases, and membership
 projects.
 
-**Version:** 1.1.9
+**Version:** 1.2.0
 **Author:** Maxim Semenov  
 **Website:** [smnv.org](https://smnv.org)  
 **Email:** [maxim@smnv.org](mailto:maxim@smnv.org)
@@ -37,7 +37,8 @@ If this project helps your work, consider supporting future development: [GitHub
 
 ## Admin Area
 
-Lumen adds **Setup → Lumen**, where editors can:
+Lumen adds **Setup → Lumen**, where editors use separate, directly linkable
+Overview, Videos, Upload, Settings, Usage, and Event Log pages to:
 
 - check the Cloudflare connection and processing health;
 - browse, search, filter, sort, and paginate the video library;

@@ -111,11 +111,11 @@ foreach(array_merge($moduleFiles, $srcPhpFiles) as $file) {
 section('3. Class structure');
 
 $modules = [
-    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 119],
-    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 119],
-    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 119],
-    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 119],
-    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 119],
+    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 120],
+    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 120],
+    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 120],
+    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 120],
+    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 120],
 ];
 
 foreach($modules as $file => $spec) {
@@ -281,7 +281,7 @@ if(strpos($processSources, 'lumen-sort-control') !== false
     fail("ProcessLumen is missing the compact sort control");
 }
 
-if(strpos($processSources, "\$key === 'total' ? \$baseUrl . '#library'") !== false
+if(strpos($processSources, "\$key === 'total' ? \$baseUrl : \$baseUrl . '?status=' . \$key") !== false
     && strpos($processSources, "(string) \$activeStatus === ''") !== false) {
     pass("ProcessLumen total status returns to the complete library");
 } else {
@@ -420,10 +420,23 @@ if($postFormCount > 0 && $csrfInputCount >= $postFormCount) {
     fail("Dashboard POST forms are missing CSRF tokens ($postFormCount forms, $csrfInputCount token calls)");
 }
 
-if(strpos($pl, 'if($mutation) $this->validateCsrf();') !== false) {
+if(substr_count($pl, '$this->validateCsrf();') >= 5) {
     pass('Dashboard mutations validate the ProcessWire CSRF token');
 } else {
     fail('Dashboard mutations do not validate the ProcessWire CSRF token');
+}
+
+foreach(['Videos', 'Upload', 'Settings', 'Usage', 'EventLog'] as $routeMethod) {
+    if(strpos($pl, "___execute{$routeMethod}()") !== false) pass("ProcessLumen exposes the {$routeMethod} workspace route");
+    else fail("ProcessLumen is missing the {$routeMethod} workspace route");
+}
+
+if(strpos($processSources, "adminSectionUrl('videos')") !== false
+    && strpos($processSources, 'href="#library"') === false
+    && strpos($processSources, 'href="#settings"') === false) {
+    pass('Workspace navigation and library actions use real admin routes.');
+} else {
+    fail('Workspace navigation still depends on single-page anchor links.');
 }
 
 if(strpos($pl, '___executeAddField') !== false

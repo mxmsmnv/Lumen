@@ -12,6 +12,8 @@
 .ProcessLumen .lumen-admin-nav {
 	overflow-x: auto;
 	overflow-y: hidden;
+	padding-bottom: 0.75rem;
+	border-bottom: 1px solid var(--pw-border-color);
 	scrollbar-width: thin;
 }
 
@@ -44,6 +46,52 @@
 
 .ProcessLumen .lumen-admin-section {
 	scroll-margin-top: 1.5rem;
+}
+
+.ProcessLumen .lumen-page-intro {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 1.5rem;
+	align-items: center;
+	min-height: 4.75rem;
+	margin-bottom: 1.5rem;
+	padding-bottom: 1.5rem;
+	border-bottom: 1px solid var(--pw-border-color);
+}
+
+.ProcessLumen .lumen-page-intro > p {
+	max-width: 52rem;
+	font-size: 1rem;
+	line-height: 1.55;
+}
+
+.ProcessLumen .lumen-page-intro__aside {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.ProcessLumen .lumen-overview-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.75rem;
+}
+
+.ProcessLumen .lumen-overview-grid article {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.ProcessLumen .lumen-overview-grid article > .uk-button {
+	margin-top: auto;
+}
+
+.ProcessLumen .lumen-kicker {
+	color: var(--pw-muted-color);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
 }
 
 .ProcessLumen .lumen-admin-section + .lumen-admin-section {
@@ -125,6 +173,21 @@
 	grid-template-columns: minmax(0, 1fr) auto;
 	gap: 1rem;
 	align-items: center;
+}
+
+.ProcessLumen .lumen-category-filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	align-items: center;
+}
+
+.ProcessLumen .lumen-category-filters .uk-label {
+	margin: 0 !important;
+	padding: 0.3rem 0.65rem;
+	border-radius: 999px;
+	font-weight: 500;
+	line-height: 1.25;
 }
 
 .ProcessLumen .lumen-sort-control {
@@ -261,6 +324,30 @@
 }
 
 @media (max-width: 639px) {
+	.ProcessLumen .lumen-admin-nav {
+		margin-bottom: 1rem !important;
+	}
+
+	.ProcessLumen .lumen-page-intro {
+		grid-template-columns: 1fr;
+		gap: 0.75rem;
+		min-height: 0;
+		margin-bottom: 1rem;
+		padding-bottom: 1rem;
+	}
+
+	.ProcessLumen .lumen-page-intro__aside {
+		justify-content: flex-start;
+	}
+
+	.ProcessLumen .lumen-page-intro__aside .uk-button {
+		width: 100%;
+	}
+
+	.ProcessLumen .lumen-overview-grid {
+		grid-template-columns: 1fr;
+	}
+
 	.ProcessLumen .lumen-module-head,
 	.ProcessLumen .lumen-section-head {
 		grid-template-columns: 1fr;
@@ -334,6 +421,14 @@
 }
 
 @media (min-width: 640px) and (max-width: 959px) {
+	.ProcessLumen .lumen-overview-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.ProcessLumen .lumen-overview-grid article:last-child {
+		grid-column: 1 / -1;
+	}
+
 	.ProcessLumen .lumen-stat-grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}

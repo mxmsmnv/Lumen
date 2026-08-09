@@ -3,14 +3,14 @@
 trait ProcessLumenUploadTrait {
 
 
-	protected function renderUploadAccordion($fields) {
+	protected function renderUploadAccordion($fields, $showHeading = true) {
 	    $uploadForm = $this->renderUploadForm($fields);
 	    $s = $this->wire('sanitizer');
 	    $adminUrl = $this->wire('config')->urls->admin;
 
 	    $body = $uploadForm ?: $this->renderUploadEmptyState($fields);
 
-	    return '<div class="lumen-section-head">' .
+	    $heading = $showHeading ? '<div class="lumen-section-head">' .
 				'<div><h2 class="uk-h3 uk-margin-remove">' .
 					$s->entities($uploadForm ? $this->_('Upload Video') : $this->_('Upload Video — Setup Needed')) .
 				'</h2><p class="uk-text-muted uk-margin-small-top uk-margin-remove-bottom">' .
@@ -18,8 +18,9 @@ trait ProcessLumenUploadTrait {
 						? $this->_('Choose a target page and send a source video to the configured Lumen field.')
 						: $this->_('Assign a Lumen field to a template before uploading from the dashboard.')) .
 				'</p></div>' .
-			'</div>' .
-			'<div class="uk-card uk-card-default uk-card-small uk-card-body">' .
+			'</div>' : '';
+
+	    return $heading . '<div class="uk-card uk-card-default uk-card-small uk-card-body">' .
 	                        '<p class="uk-text-small uk-text-muted uk-margin-remove-top">' .
 	                            $s->entities($uploadForm
 	                                ? $this->_('Choose a target page, select a video file, and Lumen will add it to the page field.')

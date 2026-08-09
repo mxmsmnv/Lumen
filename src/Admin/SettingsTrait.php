@@ -3,7 +3,7 @@
 trait ProcessLumenSettingsTrait {
 
 
-		protected function renderSettingsPanel() {
+		protected function renderSettingsPanel($showHeading = true) {
 		    /** @var Lumen $lumen */
 		    $lumen = $this->wire('modules')->get('Lumen');
 		    $s = $this->wire('sanitizer');
@@ -14,14 +14,13 @@ trait ProcessLumenSettingsTrait {
 		    $debugMode = (bool) $lumen->debugMode;
 		    $maxDuration = (int) $lumen->maxDurationSeconds;
 
-		    $settings =
-				'<div class="lumen-section-head">' .
+		    $heading = $showHeading ? '<div class="lumen-section-head">' .
 					'<div><h2 class="uk-h3 uk-margin-remove">' . $s->entities($this->_('Settings')) . '</h2>' .
 					'<p class="uk-text-muted uk-margin-small-top uk-margin-remove-bottom">' .
 						$s->entities($this->_('Connection, upload limits, local development, and diagnostics.')) .
 					'</p></div>' .
-				'</div>' .
-				'<div class="uk-card uk-card-default uk-card-small uk-card-body">' .
+				'</div>' : '';
+		    $settings = $heading . '<div class="uk-card uk-card-default uk-card-small uk-card-body">' .
 		                    '<div class="uk-alert-primary uk-margin-remove-top" uk-alert>' .
 		                        '<p class="uk-margin-remove uk-text-small">' .
 		                            '<strong>' . $s->entities($this->_('Cloudflare Images and Stream setup')) . '</strong><br>' .
@@ -118,7 +117,7 @@ trait ProcessLumenSettingsTrait {
 		    $this->wire('cache')->delete('lumen_connection_status');
 
 		    $this->message($this->_('Settings saved.'));
-		    $this->session->redirect($this->page->url);
+		    $this->session->redirect($this->adminSectionUrl('settings'));
 		    return '';
 		}
 
@@ -127,12 +126,12 @@ trait ProcessLumenSettingsTrait {
 		    $lumen = $this->wire('modules')->get('Lumen');
 		    $lumen->clearEventLog();
 		    $this->message($this->_('Lumen event log cleared.'));
-		    $this->session->redirect($this->page->url);
+		    $this->session->redirect($this->adminSectionUrl('event-log'));
 		    return '';
 		}
 
 
-		protected function renderEventLogPanel() {
+		protected function renderEventLogPanel($showHeading = true) {
 		    /** @var Lumen $lumen */
 		    $lumen = $this->wire('modules')->get('Lumen');
 		    $s = $this->wire('sanitizer');
@@ -161,13 +160,14 @@ trait ProcessLumenSettingsTrait {
 		        '</td></tr>';
 		    }
 
-		    return '<div class="lumen-section-head">' .
+		    $heading = $showHeading ? '<div class="lumen-section-head">' .
 					'<div><h2 class="uk-h3 uk-margin-remove">' . $s->entities($this->_('Event Log')) . '</h2>' .
 					'<p class="uk-text-muted uk-margin-small-top uk-margin-remove-bottom">' .
 						$s->entities($this->_('Recent connection, upload, API, and processing events.')) .
 					'</p></div>' .
-				'</div>' .
-				'<div class="uk-card uk-card-default uk-card-small uk-card-body">' .
+				'</div>' : '';
+
+		    return $heading . '<div class="uk-card uk-card-default uk-card-small uk-card-body">' .
 		        '<div class="uk-grid-small uk-flex-middle uk-margin-small-bottom" uk-grid>' .
 		            '<div class="uk-width-expand">' .
 		                '<p class="uk-text-small uk-text-muted uk-margin-remove">' .
@@ -201,7 +201,7 @@ trait ProcessLumenSettingsTrait {
 
 		    if(!$field || !$field->id || !$template || !$template->id) {
 		        $this->error($this->_('Invalid field or template.'));
-		        $this->session->redirect($this->page->url);
+		        $this->session->redirect($this->adminSectionUrl('upload'));
 		        return '';
 		    }
 
@@ -214,7 +214,7 @@ trait ProcessLumenSettingsTrait {
 		        $this->_('Field %s assigned to template %s.'),
 		        $field->name, $template->name
 		    ));
-		    $this->session->redirect($this->page->url);
+		    $this->session->redirect($this->adminSectionUrl('upload'));
 		    return '';
 		}
 }

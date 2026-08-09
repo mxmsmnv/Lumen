@@ -5,7 +5,7 @@ trait ProcessLumenFiltersTrait {
 
 	protected function renderFilters($categories, $filterStatus, $filterCategory, $filterSearch, $filterTags, $totalFiltered) {
 		$s = $this->wire('sanitizer');
-		$baseUrl = $this->page->url;
+		$baseUrl = $this->adminSectionUrl('videos');
 
 		$hasFilters = $filterStatus || $filterCategory || $filterSearch || $filterTags;
 		$out = '<div class="uk-card uk-card-default uk-card-small uk-card-body uk-margin-bottom">' .
@@ -75,7 +75,7 @@ trait ProcessLumenFiltersTrait {
 		// Category chips
 		if(count($categories)) {
 			arsort($categories);
-			$out .= '<div class="uk-margin-small-top">' .
+			$out .= '<div class="lumen-category-filters uk-margin-small-top">' .
 				'<span class="uk-text-small uk-text-muted uk-margin-small-right">' . $s->entities($this->_('Categories')) . '</span>';
 
 			// "All" chip
@@ -105,7 +105,7 @@ trait ProcessLumenFiltersTrait {
 
 	protected function renderSortControls($currentSort) {
 		$s = $this->wire('sanitizer');
-		$baseUrl = $this->page->url;
+		$baseUrl = $this->adminSectionUrl('videos');
 
 		$options = array(
 			'status'   => $this->_('Status'),
@@ -133,7 +133,7 @@ trait ProcessLumenFiltersTrait {
 
 		foreach($options as $key => $label) {
 			$isActive = ($currentSort === $key);
-			$url = $baseUrl . $q . 'sort=' . $key . '#library';
+			$url = $baseUrl . $q . 'sort=' . $key;
 			$out .= '<option value="' . $s->entities($url) . '"' . ($isActive ? ' selected' : '') . '>' .
 				$s->entities($label) . '</option>';
 		}
@@ -247,7 +247,7 @@ trait ProcessLumenFiltersTrait {
 		if($totalPages <= 1) return '';
 
 		$s = $this->wire('sanitizer');
-		$baseUrl = $this->page->url;
+		$baseUrl = $this->adminSectionUrl('videos');
 
 		// Rebuild query
 		$queryParts = array();

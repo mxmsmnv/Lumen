@@ -2,11 +2,35 @@
 
 trait ProcessLumenDashboardTrait {
 
-	protected function renderAdminNav() {
+	protected function adminSectionUrl($section = 'overview') {
+		$base = $this->page->url;
+		return $section === 'overview' ? $base : $base . $section . '/';
+	}
+
+	protected function prepareWorkspacePage($active, $title) {
+		if($active !== 'overview') {
+			$this->breadcrumb($this->page->url, $this->_('Lumen'));
+		}
+		$this->headline($title);
+	}
+
+	protected function renderAdminShell($active, $description, $body, $aside = '') {
+		$s = $this->wire('sanitizer');
+		return '<div class="pw-wrap lumen-admin lumen-admin--' . $s->entities($active) . '">' .
+			$this->renderAdminNav($active) .
+			'<div class="lumen-page-intro">' .
+				'<p class="uk-text-muted uk-margin-remove">' . $s->entities($description) . '</p>' .
+				($aside !== '' ? '<div class="lumen-page-intro__aside">' . $aside . '</div>' : '') .
+			'</div>' .
+			$body .
+		'</div>';
+	}
+
+	protected function renderAdminNav($active = 'overview') {
 		$s = $this->wire('sanitizer');
 		$items = array(
 			'overview' => $this->_('Overview'),
-			'library' => $this->_('Videos'),
+			'videos' => $this->_('Videos'),
 			'upload' => $this->_('Upload'),
 			'settings' => $this->_('Settings'),
 			'usage' => $this->_('Usage'),
@@ -15,18 +39,19 @@ trait ProcessLumenDashboardTrait {
 		$out = '<nav class="lumen-admin-nav uk-margin-medium-bottom" aria-label="' .
 			$s->entities($this->_('Lumen sections')) . '"><ul class="uk-subnav uk-subnav-pill uk-margin-remove">';
 		foreach($items as $id => $label) {
-			$out .= '<li' . ($id === 'overview' ? ' class="uk-active"' : '') . '><a href="#' . $id . '">' .
+			$out .= '<li' . ($id === $active ? ' class="uk-active"' : '') . '><a href="' . $this->adminSectionUrl($id) . '"' .
+				($id === $active ? ' aria-current="page"' : '') . '>' .
 				$s->entities($label) . '</a></li>';
 		}
 		return $out . '</ul></nav>';
 	}
 
-	protected function renderEmptyState() {
+	protected function renderEmptyState($active = 'overview') {
 		$conn = $this->getConnectionStatus();
 		$adminUrl = $this->wire('config')->urls->admin;
 
 		$out = '<div class="pw-wrap lumen-admin">' .
-			$this->renderAdminNav() .
+			$this->renderAdminNav($active) .
 
 			'<div class="lumen-empty-state uk-text-center uk-padding-large">' .
 
@@ -109,13 +134,13 @@ trait ProcessLumenDashboardTrait {
 			'pending' => array('label' => $this->_('Pending')),
 		);
 
-		$baseUrl = $this->page->url;
+		$baseUrl = $this->adminSectionUrl('videos');
 
 		$cards = '';
 		foreach($items as $key => $item) {
 			$value = $stats[$key] ?? 0;
 			$isActive = $key === 'total' ? (string) $activeStatus === '' : $activeStatus === $key;
-			$url = $key === 'total' ? $baseUrl . '#library' : $baseUrl . '?status=' . $key . '#library';
+			$url = $key === 'total' ? $baseUrl : $baseUrl . '?status=' . $key;
 			$cards .=
 				'<li>' .
 					'<a href="' . $url . '" ' .
@@ -131,8 +156,48 @@ trait ProcessLumenDashboardTrait {
 			$this->wire('sanitizer')->entities($this->_('Video status filters')) . '">' . $cards . '</ul>';
 	}
 
+	protected function renderOverviewCards($stats, $fields) {
+		$s = $this->wire('sanitizer');
+		$cards = array(
+			array(
+				'label' => $this->_('Video library'),
+				'value' => sprintf($this->_('%1$d ready of %2$d total'), (int)$stats['ready'], (int)$stats['total']),
+				'description' => $this->_('Search, filter, inspect, and manage every video asset.'),
+				'url' => $this->adminSectionUrl('videos'),
+				'action' => $this->_('Open library'),
+			),
+			array(
+				'label' => $this->_('Upload'),
+				'value' => sprintf($this->_('%d configured field(s)'), count($fields)),
+				'description' => $this->_('Choose a destination page before adding a source video.'),
+				'url' => $this->adminSectionUrl('upload'),
+				'action' => $this->_('Upload video'),
+			),
+			array(
+				'label' => $this->_('Configuration'),
+				'value' => $this->_('Connection and delivery'),
+				'description' => $this->_('Review credentials, local mode, upload limits, and diagnostics.'),
+				'url' => $this->adminSectionUrl('settings'),
+				'action' => $this->_('Open settings'),
+			),
+		);
 
-	protected function renderUsagePanel($stats) {
+		$out = '<div class="lumen-overview-grid uk-margin-top">';
+		foreach($cards as $card) {
+			$out .= '<article class="uk-card uk-card-default uk-card-small uk-card-body">' .
+				'<p class="lumen-kicker uk-margin-remove">' . $s->entities($card['label']) . '</p>' .
+				'<h2 class="uk-h3 uk-margin-small-top uk-margin-remove-bottom">' . $s->entities($card['value']) . '</h2>' .
+				'<p class="uk-text-muted uk-margin-small-top">' . $s->entities($card['description']) . '</p>' .
+				'<a class="uk-button uk-button-default uk-button-small" href="' . $card['url'] . '">' .
+					$s->entities($card['action']) .
+				'</a>' .
+			'</article>';
+		}
+		return $out . '</div>';
+	}
+
+
+	protected function renderUsagePanel($stats, $expanded = false) {
 		$s = $this->wire('sanitizer');
 		$storedSeconds = max(0, (int) ($stats['duration_seconds'] ?? 0));
 		$deliveredSeconds = max(0, (int) ($stats['delivered_seconds_estimate'] ?? 0));
@@ -146,7 +211,7 @@ trait ProcessLumenDashboardTrait {
 		$creatorStoragePct = min(100, round(($storedMinutes / self::STREAM_CREATOR_STORAGE_MINUTES) * 100));
 		$creatorDeliveryPct = min(100, round(($deliveredMinutes / self::STREAM_CREATOR_DELIVERY_MINUTES) * 100));
 
-		return '<details class="lumen-usage-panel uk-card uk-card-default">' .
+		return '<details class="lumen-usage-panel uk-card uk-card-default"' . ($expanded ? ' open' : '') . '>' .
 			'<summary class="lumen-disclosure-summary">' .
 				'<span><strong>' . $s->entities($this->_('Stream usage and cost estimate')) . '</strong>' .
 				'<small>' . sprintf(
@@ -275,7 +340,7 @@ trait ProcessLumenDashboardTrait {
 
 		$out .=
 			'<div>' .
-				'<a href="#settings" class="uk-button uk-button-default uk-button-small">' .
+				'<a href="' . $this->adminSectionUrl('settings') . '" class="uk-button uk-button-default uk-button-small">' .
 					$s->entities($this->_('Settings')) .
 				'</a>' .
 			'</div>';

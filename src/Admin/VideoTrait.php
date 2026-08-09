@@ -45,7 +45,7 @@ trait ProcessLumenVideoTrait {
 		$bulkId = $page->id . ':' . $fieldName . ':' . urlencode($pf->basename);
 
 		    // Detail view URL
-		$detailUrl = $this->page->url . '?video=1&page_id=' . $page->id . '&field=' . urlencode($fieldName) . '&file=' . urlencode($pf->basename);
+		$detailUrl = $this->adminSectionUrl('videos') . '?video=1&page_id=' . $page->id . '&field=' . urlencode($fieldName) . '&file=' . urlencode($pf->basename);
 		$detailTitle = $s->entities(sprintf($this->_('View details: %s'), $pf->basename));
 
 		// Status badge
@@ -183,7 +183,7 @@ trait ProcessLumenVideoTrait {
 			$out .= '<div class="uk-margin-small-top">';
 			$tags = array_map('trim', explode(',', $pf->stream_tags));
 			foreach($tags as $tag) {
-				$tagUrl = $this->page->url . '?tags=' . urlencode($tag);
+				$tagUrl = $this->adminSectionUrl('videos') . '?tags=' . urlencode($tag);
 				$out .= '<a href="' . $tagUrl . '" class="uk-label uk-label-default uk-link-reset uk-margin-small-right uk-margin-small-bottom">'
 					. $s->entities($tag)
 					. '</a>';
@@ -256,7 +256,7 @@ trait ProcessLumenVideoTrait {
 	    $copyScript = $this->renderCopyScript();
 	    $ft = $this->wire('modules')->get('FieldtypeLumen');
 	    $uid = $pf->stream_uid;
-	    $dashboardUrl = $this->page->url;
+	    $dashboardUrl = $this->adminSectionUrl('videos');
 	    $dash = '<span class="uk-text-muted">—</span>';
 
 	    // Status
@@ -288,12 +288,12 @@ trait ProcessLumenVideoTrait {
 	            '<dd class="uk-text-break">' . ($value !== '' && $value !== null ? $value : $dash) . '</dd>';
 	    };
 
-	    $out = '<div class="pw-wrap lumen-admin lumen-video-detail">' .
+	    $out = '<div class="lumen-video-detail">' .
 
 	        // --- Top bar ---
 	        '<div class="uk-grid-small uk-flex-middle uk-margin-bottom" uk-grid>' .
 	            '<div class="uk-width-expand"><a href="' . $dashboardUrl . '" class="uk-button uk-button-default uk-button-small">' .
-	                $s->entities($this->_('Dashboard')) .
+	                $s->entities($this->_('Video library')) .
 	            '</a></div>' .
 	            '<div class="uk-width-auto">' .
 	                '<a href="' . $page->editUrl() . '" class="uk-button uk-button-primary uk-button-small">' .

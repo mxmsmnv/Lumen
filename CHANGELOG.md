@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.0 — 2026-08-08
+
+### Changed
+- Split the former single long dashboard into dedicated Overview, Videos,
+  Upload, Settings, Usage, and Event Log routes with accurate ProcessWire
+  headlines, breadcrumbs, and active pill navigation.
+- Reworked Overview into a concise operational summary and moved the complete
+  library, upload form, settings, usage details, and diagnostics to focused
+  pages.
+- Improved responsive spacing, overview cards, category filters, and mobile
+  actions while preserving the existing video-detail query format.
+
 All notable changes to Lumen will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
