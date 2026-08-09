@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1 — 2026-08-08
+
+### Fixed
+- Give the video detail workspace its own accurate ProcessWire headline.
+
 ## 1.2.0 — 2026-08-08
 
 ### Changed

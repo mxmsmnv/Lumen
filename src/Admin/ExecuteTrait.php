@@ -42,8 +42,9 @@ trait ProcessLumenExecuteTrait {
 			return $this->handleBulkDelete();
 		}
 
-		$this->prepareWorkspacePage('videos', $this->_('Video library'));
-		if($this->input->get('video')) {
+		$isDetail = (bool)$this->input->get('video');
+		$this->prepareWorkspacePage('videos', $isDetail ? $this->_('Video details') : $this->_('Video library'));
+		if($isDetail) {
 			$detail = $this->handleVideoDetail();
 			return $this->renderAdminShell(
 				'videos',

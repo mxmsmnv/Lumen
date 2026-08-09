@@ -111,11 +111,11 @@ foreach(array_merge($moduleFiles, $srcPhpFiles) as $file) {
 section('3. Class structure');
 
 $modules = [
-    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 120],
-    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 120],
-    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 120],
-    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 120],
-    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 120],
+    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 121],
+    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 121],
+    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 121],
+    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 121],
+    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 121],
 ];
 
 foreach($modules as $file => $spec) {

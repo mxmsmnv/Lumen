@@ -17,7 +17,7 @@ require_once __DIR__ . '/src/Core/ConfigUiTrait.php';
  * @property bool $debugMode Enable detailed Lumen event logging
  * @property string $customerCodeOverride Manually override customer code
  *
- * @version 120
+ * @version 121
  */
 class Lumen extends WireData implements Module, ConfigurableModule {
 
@@ -33,7 +33,7 @@ class Lumen extends WireData implements Module, ConfigurableModule {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Lumen',
-			'version' => 120,
+			'version' => 121,
 			'summary' => 'Cloudflare Stream video package: central configuration and API helpers',
 			'href' => 'https://smnv.org',
 			'author' => 'Maxim Semenov',
