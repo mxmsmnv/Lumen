@@ -10,7 +10,7 @@ It is made for sites where video belongs to the content model: media libraries,
 editorial platforms, courses, portfolios, product showcases, and membership
 projects.
 
-**Version:** 1.2.1
+**Version:** 1.2.2
 **Author:** Maxim Semenov  
 **Website:** [smnv.org](https://smnv.org)  
 **Email:** [maxim@smnv.org](mailto:maxim@smnv.org)

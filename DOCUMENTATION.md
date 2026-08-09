@@ -32,6 +32,11 @@ native ProcessWire/UIkit controls and inherits light, dark, and accent colors
 from the active AdminThemeUikit theme. The video library is the primary
 workspace; usage and cost estimates are collapsed until requested.
 
+Overview reports only values available from configured Lumen fields: video
+status, stored duration, recorded Stream views, assets added in the last 30
+days, orientation, and category distribution. Its charts use semantic HTML and
+native progress elements; they do not send metadata to an analytics service.
+
 ## Field Setup
 
 1. **Setup → Fields → Add New**

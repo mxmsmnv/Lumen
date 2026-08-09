@@ -26,6 +26,7 @@ trait ProcessLumenExecuteTrait {
 		$conn = $this->getConnectionStatus();
 		$body = $this->renderToolbar($data['stats']) .
 			$this->renderStatsRow($data['stats']) .
+			$this->renderOverviewInsights($data['stats'], $data['categories']) .
 			$this->renderOverviewCards($data['stats'], $fields);
 
 		return $this->renderAdminShell(
@@ -164,8 +165,15 @@ trait ProcessLumenExecuteTrait {
 			'pending' => 0,
 			'duration_seconds' => 0,
 			'delivered_seconds_estimate' => 0,
+			'views_total' => 0,
+			'added_30_days' => 0,
+			'landscape' => 0,
+			'portrait' => 0,
+			'square' => 0,
+			'unknown_orientation' => 0,
 		);
 		$categories = array();
+		$recentThreshold = time() - (30 * 86400);
 
 		foreach($fields as $field) {
 			foreach($pages->find("{$field->name}.count>0, include=all") as $page) {
@@ -174,6 +182,14 @@ trait ProcessLumenExecuteTrait {
 					$actualStatus = $this->dashboardStatus($pf, $localStorage);
 					$durationSeconds = max(0, (int)$pf->stream_duration);
 					$views = max(0, (int)$pf->stream_views);
+					$stats['views_total'] += $views;
+					if((int)$pf->created >= $recentThreshold) $stats['added_30_days']++;
+					$width = max(0, (int)$pf->stream_width);
+					$height = max(0, (int)$pf->stream_height);
+					if($width === 0 || $height === 0) $stats['unknown_orientation']++;
+					elseif($width > $height) $stats['landscape']++;
+					elseif($height > $width) $stats['portrait']++;
+					else $stats['square']++;
 					if($durationSeconds > 0 && $actualStatus !== 'error') {
 						$stats['duration_seconds'] += $durationSeconds;
 						$stats['delivered_seconds_estimate'] += $durationSeconds * $views;

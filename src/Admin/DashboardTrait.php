@@ -196,6 +196,67 @@ trait ProcessLumenDashboardTrait {
 		return $out . '</div>';
 	}
 
+	protected function renderOverviewInsights($stats, $categories) {
+		$s = $this->wire('sanitizer');
+		$total = max(0, (int)($stats['total'] ?? 0));
+		$ready = max(0, (int)($stats['ready'] ?? 0));
+		$readyRate = $total > 0 ? (int)round(($ready / $total) * 100) : 0;
+		$storedMinutes = (int)ceil(max(0, (int)($stats['duration_seconds'] ?? 0)) / 60);
+		$views = max(0, (int)($stats['views_total'] ?? 0));
+		$added = max(0, (int)($stats['added_30_days'] ?? 0));
+		$metrics = array(
+			array('label' => $this->_('Ready rate'), 'value' => $readyRate . '%', 'note' => sprintf($this->_('%1$d of %2$d assets'), $ready, $total)),
+			array('label' => $this->_('Stored duration'), 'value' => $this->formatUsageMinutes($storedMinutes), 'note' => $this->_('Across configured fields')),
+			array('label' => $this->_('Recorded views'), 'value' => number_format($views), 'note' => $this->_('From stored Stream metadata')),
+			array('label' => $this->_('Added recently'), 'value' => number_format($added), 'note' => $this->_('During the last 30 days')),
+		);
+
+		$out = '<section class="lumen-overview-insights uk-margin-top" aria-labelledby="lumen-library-snapshot">' .
+			'<div class="lumen-section-head">' .
+				'<div><p class="lumen-kicker uk-margin-remove">' . $s->entities($this->_('Library intelligence')) . '</p>' .
+				'<h2 id="lumen-library-snapshot" class="uk-h3 uk-margin-small-top uk-margin-remove-bottom">' . $s->entities($this->_('Library snapshot')) . '</h2></div>' .
+				'<a href="' . $this->adminSectionUrl('usage') . '" class="uk-button uk-button-default uk-button-small">' . $s->entities($this->_('View usage')) . '</a>' .
+			'</div><dl class="lumen-overview-metrics">';
+		foreach($metrics as $metric) {
+			$out .= '<div><dt>' . $s->entities($metric['label']) . '</dt>' .
+				'<dd><strong>' . $s->entities($metric['value']) . '</strong><small>' . $s->entities($metric['note']) . '</small></dd></div>';
+		}
+		$out .= '</dl><div class="lumen-overview-charts">' .
+			$this->renderOverviewChart($this->_('Format mix'), $this->_('Orientation recorded in video metadata.'), array(
+				$this->_('Landscape') => (int)($stats['landscape'] ?? 0),
+				$this->_('Portrait') => (int)($stats['portrait'] ?? 0),
+				$this->_('Square') => (int)($stats['square'] ?? 0),
+				$this->_('Unknown') => (int)($stats['unknown_orientation'] ?? 0),
+			)) .
+			$this->renderOverviewChart($this->_('Top categories'), $this->_('Most represented editorial categories.'), $this->topOverviewCategories($categories)) .
+		'</div></section>';
+		return $out;
+	}
+
+	protected function topOverviewCategories($categories, $limit = 6) {
+		$categories = is_array($categories) ? $categories : array();
+		arsort($categories, SORT_NUMERIC);
+		return array_slice($categories, 0, max(1, (int)$limit), true);
+	}
+
+	protected function renderOverviewChart($title, $description, $items) {
+		$s = $this->wire('sanitizer');
+		$items = array_filter((array)$items, function($value) { return (int)$value > 0; });
+		$max = $items ? max(array_map('intval', $items)) : 1;
+		$out = '<article class="uk-card uk-card-default uk-card-small uk-card-body lumen-overview-chart">' .
+			'<h3 class="uk-h4 uk-margin-remove">' . $s->entities($title) . '</h3>' .
+			'<p class="uk-text-small uk-text-muted uk-margin-small-top">' . $s->entities($description) . '</p>';
+		if(!$items) {
+			return $out . '<p class="uk-text-muted uk-margin-remove-bottom">' . $s->entities($this->_('No metadata yet.')) . '</p></article>';
+		}
+		$out .= '<dl class="lumen-chart-list uk-margin-top">';
+		foreach($items as $label => $value) {
+			$out .= '<div><dt><span>' . $s->entities($label) . '</span><strong>' . number_format((int)$value) . '</strong></dt>' .
+				'<dd><progress class="uk-progress lumen-chart-progress" value="' . (int)$value . '" max="' . (int)$max . '">' . (int)$value . '</progress></dd></div>';
+		}
+		return $out . '</dl></article>';
+	}
+
 
 	protected function renderUsagePanel($stats, $expanded = false) {
 		$s = $this->wire('sanitizer');

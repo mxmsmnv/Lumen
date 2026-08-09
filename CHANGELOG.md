@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.2 — 2026-08-09
+
+### Changed
+- Expanded Overview with real library-health metrics for readiness, stored
+  duration, recorded views, and recently added assets.
+- Added accessible, CSS-native format and category charts sourced from current
+  Lumen Pagefile metadata, without adding an analytics dependency.
+
 ## 1.2.1 — 2026-08-08
 
 ### Fixed

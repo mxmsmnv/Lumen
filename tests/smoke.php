@@ -111,11 +111,11 @@ foreach(array_merge($moduleFiles, $srcPhpFiles) as $file) {
 section('3. Class structure');
 
 $modules = [
-    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 121],
-    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 121],
-    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 121],
-    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 121],
-    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 121],
+    module_file('Lumen') => ['class' => 'Lumen', 'extends' => 'WireData', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 122],
+    module_file('FieldtypeLumen') => ['class' => 'FieldtypeLumen', 'extends' => 'FieldtypeFile', 'implements' => ['Module'], 'version' => 122],
+    module_file('InputfieldLumen') => ['class' => 'InputfieldLumen', 'extends' => 'InputfieldFile', 'implements' => ['Module'], 'version' => 122],
+    module_file('ProcessLumen') => ['class' => 'ProcessLumen', 'extends' => 'Process', 'implements' => ['Module'], 'version' => 122],
+    module_file('TextformatterLumen') => ['class' => 'TextformatterLumen', 'extends' => 'Textformatter', 'implements' => ['Module', 'ConfigurableModule'], 'version' => 122],
 ];
 
 foreach($modules as $file => $spec) {
@@ -437,6 +437,16 @@ if(strpos($processSources, "adminSectionUrl('videos')") !== false
     pass('Workspace navigation and library actions use real admin routes.');
 } else {
     fail('Workspace navigation still depends on single-page anchor links.');
+}
+
+if(strpos($processSources, 'renderOverviewInsights') !== false
+    && strpos($processSources, "'views_total'") !== false
+    && strpos($processSources, "'added_30_days'") !== false
+    && strpos($processSources, 'lumen-chart-progress') !== false
+    && strpos($processSources, '<progress') !== false) {
+    pass('Overview uses real Pagefile metrics and accessible native charts.');
+} else {
+    fail('Overview intelligence metrics or accessible charts are missing.');
 }
 
 if(strpos($pl, '___executeAddField') !== false

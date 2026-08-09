@@ -94,6 +94,47 @@
 	text-transform: uppercase;
 }
 
+.ProcessLumen .lumen-overview-insights {
+	padding: 1.25rem;
+	border: 1px solid var(--pw-border-color);
+	background: color-mix(in srgb, var(--pw-blocks-background) 72%, transparent);
+}
+
+.ProcessLumen .lumen-overview-metrics {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	margin: 0;
+	border: 1px solid var(--pw-border-color);
+	background: var(--pw-blocks-background);
+}
+
+.ProcessLumen .lumen-overview-metrics > div {
+	min-width: 0;
+	padding: 1rem;
+	border-right: 1px solid var(--pw-border-color);
+}
+
+.ProcessLumen .lumen-overview-metrics > div:last-child { border-right: 0; }
+.ProcessLumen .lumen-overview-metrics dt { color: var(--pw-muted-color); font-size: 0.8125rem; }
+.ProcessLumen .lumen-overview-metrics dd { display: grid; gap: 0.25rem; margin: 0.35rem 0 0; }
+.ProcessLumen .lumen-overview-metrics strong { font-size: clamp(1.35rem, 2vw, 1.75rem); line-height: 1.1; }
+.ProcessLumen .lumen-overview-metrics small { color: var(--pw-muted-color); }
+
+.ProcessLumen .lumen-overview-charts {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.75rem;
+	margin-top: 0.75rem;
+}
+
+.ProcessLumen .lumen-overview-chart { box-shadow: none; }
+.ProcessLumen .lumen-chart-list { display: grid; gap: 0.65rem; margin-bottom: 0; }
+.ProcessLumen .lumen-chart-list > div,
+.ProcessLumen .lumen-chart-list dt { display: grid; gap: 0.3rem; }
+.ProcessLumen .lumen-chart-list dt { grid-template-columns: minmax(0, 1fr) auto; font-size: 0.8125rem; }
+.ProcessLumen .lumen-chart-list dd { margin: 0; }
+.ProcessLumen .lumen-chart-progress { height: 0.45rem; margin: 0; }
+
 .ProcessLumen .lumen-admin-section + .lumen-admin-section {
 	margin-top: 1.75rem;
 	padding-top: 1.75rem;
@@ -347,6 +388,18 @@
 	.ProcessLumen .lumen-overview-grid {
 		grid-template-columns: 1fr;
 	}
+
+	.ProcessLumen .lumen-overview-insights { padding: 1rem; }
+
+	.ProcessLumen .lumen-overview-metrics,
+	.ProcessLumen .lumen-overview-charts { grid-template-columns: 1fr; }
+
+	.ProcessLumen .lumen-overview-metrics > div {
+		border-right: 0;
+		border-bottom: 1px solid var(--pw-border-color);
+	}
+
+	.ProcessLumen .lumen-overview-metrics > div:last-child { border-bottom: 0; }
 
 	.ProcessLumen .lumen-module-head,
 	.ProcessLumen .lumen-section-head {
